@@ -1,0 +1,10 @@
+[Unit]
+Description=Sleep Belt Hub: synchronize Node RTC
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=xreon
+ExecStart=/usr/bin/python3 /home/xreon/hub/rtc_sync.py \
+    --state-dir /home/xreon/hub/state --trigger timer

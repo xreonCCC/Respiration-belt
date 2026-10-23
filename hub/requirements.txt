@@ -1,0 +1,2 @@
+# Needed only by rtc_sync.py for the Node's USB serial console.
+pyserial>=3.5
