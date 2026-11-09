@@ -1,0 +1,21 @@
+# One instance per Node plug-in, started by udev/99-respact-node.rules; %i is
+# the card's partition, e.g. sda1. BindsTo= stops the service (SIGTERM) when
+# the Node is unplugged, and the script's finally block unmounts and writes the
+# transfer log.
+[Unit]
+Description=RespAct Hub: Node USB export from /dev/%i
+BindsTo=dev-%i.device
+After=dev-%i.device network-online.target
+
+[Service]
+Type=oneshot
+# root for mount/umount; ingest and uplink run as xreon.
+User=root
+# --destination: the upload target hub_uplink.py normally uses. Add --no-delete
+# for the first runs.
+ExecStart=/usr/bin/python3 /home/xreon/hub/hub_usb_export.py \
+    --device /dev/%i \
+    --destination /home/xreon/hub/upload \
+    --state-dir /home/xreon/hub/state
+# A month of data over USB full speed takes tens of minutes, plus upload time.
+TimeoutStartSec=4h
