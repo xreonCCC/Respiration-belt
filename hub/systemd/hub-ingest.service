@@ -1,0 +1,16 @@
+[Unit]
+Description=Sleep Belt Hub: ingest session CSVs from inbox
+After=network-online.target
+
+[Service]
+Type=oneshot
+# Interval is controlled by the timer unit, not by this service.
+# Deployed user is set by install: User=xreon and /home/xreon paths.
+User=xreon
+ExecStart=/usr/bin/python3 /home/xreon/hub/hub_ingest.py \
+    --inbox /home/xreon/hub/inbox \
+    --archive /home/xreon/hub/archive \
+    --quarantine /home/xreon/hub/quarantine
+
+[Install]
+WantedBy=multi-user.target

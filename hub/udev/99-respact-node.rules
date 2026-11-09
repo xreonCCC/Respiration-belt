@@ -1,0 +1,23 @@
+# RespAct Node: TinyUSB composite device (MSC + CDC), 303a:4003. Any ESP32-S3
+# with TinyUSB CDC+MSC has this ID; with other such boards near the Hub, also
+# match ENV{ID_MODEL}=="Sleep_Monitor_TF_Card_Export" or ENV{ID_SERIAL_SHORT}.
+
+# Card partition: start the export service (udev kills long-running jobs).
+# UDISKS_IGNORE stops desktop auto-mounting.
+ACTION=="add", SUBSYSTEM=="block", ENV{DEVTYPE}=="partition", \
+    ENV{ID_VENDOR_ID}=="303a", ENV{ID_MODEL_ID}=="4003", \
+    ENV{UDISKS_IGNORE}="1", \
+    TAG+="systemd", ENV{SYSTEMD_WANTS}+="hub-usb-export@%k.service"
+# For a card without a partition table, match ENV{DEVTYPE}=="disk" instead.
+
+# Keep ModemManager from sending AT commands to the Node's serial port.
+ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", \
+    ATTR{idVendor}=="303a", ATTR{idProduct}=="4003", ENV{ID_MM_DEVICE_IGNORE}="1"
+ACTION=="add", SUBSYSTEM=="tty", \
+    ENV{ID_VENDOR_ID}=="303a", ENV{ID_MODEL_ID}=="4003", ENV{ID_MM_DEVICE_IGNORE}="1"
+
+# No autosuspend: the Node has no VBUS sense and treats a bus suspend longer
+# than 3 s as an unplug.
+ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", \
+    ATTR{idVendor}=="303a", ATTR{idProduct}=="4003", \
+    TEST=="power/control", ATTR{power/control}="on"

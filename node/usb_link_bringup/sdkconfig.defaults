@@ -1,0 +1,25 @@
+# Applied on the first build, or after idf.py fullclean.
+CONFIG_IDF_TARGET="esp32s3"
+
+# Logs on UART0 only (TP3/TP4). The CDC port carries protocol lines only.
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+# TinyUSB owns the USB pins, so no USB-Serial-JTAG console.
+CONFIG_ESP_CONSOLE_SECONDARY_NONE=y
+
+# One CDC-ACM port + mass storage -> PID 0x4003.
+CONFIG_TINYUSB_CDC_ENABLED=y
+CONFIG_TINYUSB_CDC_COUNT=1
+CONFIG_TINYUSB_MSC_ENABLED=y
+
+# Suspend/resume events for unplug detection (no VBUS pin).
+CONFIG_TINYUSB_SUSPEND_CALLBACK=y
+CONFIG_TINYUSB_RESUME_CALLBACK=y
+
+# USB identity. An empty serial string means the chip's MAC, unique per belt.
+CONFIG_TINYUSB_DESC_USE_ESPRESSIF_VID=y
+CONFIG_TINYUSB_DESC_USE_DEFAULT_PID=y
+CONFIG_TINYUSB_DESC_MANUFACTURER_STRING="HKU AIoT Lab"
+CONFIG_TINYUSB_DESC_PRODUCT_STRING="Sleep Monitor TF Card Export"
+CONFIG_TINYUSB_DESC_SERIAL_STRING=""
+CONFIG_TINYUSB_DESC_CDC_STRING="RespAct Node Control"
+CONFIG_TINYUSB_DESC_MSC_STRING="RespAct Node TF Card"

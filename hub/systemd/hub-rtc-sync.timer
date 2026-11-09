@@ -1,0 +1,10 @@
+[Unit]
+Description=Sleep Belt Hub: daily Node RTC synchronization
+
+[Timer]
+OnCalendar=*-*-* 12:00:00
+Persistent=true
+Unit=hub-rtc-sync.service
+
+[Install]
+WantedBy=timers.target

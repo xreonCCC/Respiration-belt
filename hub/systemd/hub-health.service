@@ -1,0 +1,15 @@
+[Unit]
+Description=Sleep Belt Hub: status page
+After=network-online.target
+
+[Service]
+Type=simple
+# Deployed user is set by install: User=xreon and /home/xreon paths.
+User=xreon
+ExecStart=/usr/bin/python3 /home/xreon/hub/hub_health.py \
+    --archive /home/xreon/hub/archive --port 8000
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,6 @@
+# esp_tinyusb is pinned: the code uses the 2.4.0 API, and 3.0.0 changed
+# suspend/resume and serial-number handling. Commit the generated
+# dependencies.lock.
+dependencies:
+  idf: ">=5.4"
+  espressif/esp_tinyusb: "==2.4.0"

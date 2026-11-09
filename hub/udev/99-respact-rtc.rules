@@ -1,0 +1,4 @@
+# CP210x UART used by the Node RTC console. Install under
+# /etc/udev/rules.d/ and reload udev after changing it.
+ACTION=="add", SUBSYSTEM=="tty", ENV{ID_USB_DRIVER}=="cp210x", \
+    TAG+="systemd", ENV{SYSTEMD_WANTS}+="hub-rtc-sync-udev.service"
